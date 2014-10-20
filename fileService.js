@@ -1,8 +1,8 @@
 /**
  * Handles file transfers
  */
-ecamServices.service('fileService', ['CordovaService', 'deviceService', '$rootScope', '$log', '$q', function(CordovaService, deviceService, $rootScope, $log, $q){
-  // ensure that LocalFileSystem has been declared
+angular.module('greenimp').service('fileService', ['CordovaService', 'deviceService', '$log', '$q', function(CordovaService, deviceService, $log, $q){
+  // if no LocalFileSystem has been declared create a dummy object
   if(typeof LocalFileSystem === 'undefined'){
     window.LocalFileSystem = {};
     LocalFileSystem.TEMPORARY = window.TEMPORARY || 0;
@@ -40,27 +40,28 @@ ecamServices.service('fileService', ['CordovaService', 'deviceService', '$rootSc
         return deferred.promise;
       },
       fileSystem,                                     // holds a reference to the last used file system
-      fileTransfer  = null,                           // file transfer object
-      errorCodes    = {                     // list of human readable versions of error codes
+      fileTransfer,                                   // file transfer object
+      errorCodes    = {                               // list of human readable versions of error codes
         file: {},     // errors for the file system (reading directories etc)
         transfer: {}  // error for file transfers (these are defined in getFileTransferObj, as they're not available until the object is)
       };
 
   // define the errors for files
   if(typeof FileError !== 'undefined'){
-    errorCodes.file[FileError.NOT_FOUND_ERR] = 'File not found';
-    errorCodes.file[FileError.SECURITY_ERR] = 'Security error';
-    errorCodes.file[FileError.ABORT_ERR] = 'Aborted';
-    errorCodes.file[FileError.NOT_READABLE_ERR] = 'Not readable';
-    errorCodes.file[FileError.ENCODING_ERR] = 'Encoding error';
-    errorCodes.file[FileError.NO_MODIFICATION_ALLOWED_ERR] = 'No modification allowed';
-    errorCodes.file[FileError.INVALID_STATE_ERR] = 'Invalid state';
-    errorCodes.file[FileError.SYNTAX_ERR] = 'Syntax error';
-    errorCodes.file[FileError.INVALID_MODIFICATION_ERR] = 'Invalid modification';
-    errorCodes.file[FileError.QUOTA_EXCEEDED_ERR] = 'Quota exceeded';
-    errorCodes.file[FileError.TYPE_MISMATCH_ERR] = 'Type mismatch';
-    errorCodes.file[FileError.PATH_EXISTS_ERR] = 'Path does not exist';
+    errorCodes.file[FileError.NOT_FOUND_ERR]                = 'File not found';
+    errorCodes.file[FileError.SECURITY_ERR]                 = 'Security error';
+    errorCodes.file[FileError.ABORT_ERR]                    = 'Aborted';
+    errorCodes.file[FileError.NOT_READABLE_ERR]             = 'Not readable';
+    errorCodes.file[FileError.ENCODING_ERR]                 = 'Encoding error';
+    errorCodes.file[FileError.NO_MODIFICATION_ALLOWED_ERR]  = 'No modification allowed';
+    errorCodes.file[FileError.INVALID_STATE_ERR]            = 'Invalid state';
+    errorCodes.file[FileError.SYNTAX_ERR]                   = 'Syntax error';
+    errorCodes.file[FileError.INVALID_MODIFICATION_ERR]     = 'Invalid modification';
+    errorCodes.file[FileError.QUOTA_EXCEEDED_ERR]           = 'Quota exceeded';
+    errorCodes.file[FileError.TYPE_MISMATCH_ERR]            = 'Type mismatch';
+    errorCodes.file[FileError.PATH_EXISTS_ERR]              = 'Path does not exist';
   }
+
 
   /**
    * Checks whether the path has a protocol assigned
