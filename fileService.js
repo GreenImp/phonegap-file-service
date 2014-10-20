@@ -619,7 +619,7 @@ angular.module('greenimp').service('fileService', ['CordovaService', 'deviceServ
    * @param {string} from
    * @param {string} to
    * @param {string=} newName
-   * @returns {|promise}
+   * @returns {promise}
    */
   this.copyFile = function(from, to, newName){
     var deferred  = $q.defer(); // the promise
@@ -668,7 +668,7 @@ angular.module('greenimp').service('fileService', ['CordovaService', 'deviceServ
    * @param {string} from
    * @param {string} to
    * @param {string=} newName
-   * @returns {|promise}
+   * @returns {promise}
    */
   this.moveFile = function(from, to, newName){
     var deferred  = $q.defer(); // the promise
@@ -705,6 +705,37 @@ angular.module('greenimp').service('fileService', ['CordovaService', 'deviceServ
         $log.warn('Error getting file to move (' + errorCodes.file[reason.code] + '):', from, to, newName, reason);
         deferred.reject(reason);
       }
+    );
+
+    // return the promise
+    return deferred.promise;
+  };
+
+  /**
+   * Deletes the file at the given path
+   *
+   * @param {string} path
+   * @returns {promise}
+   */
+  this.deleteFile = function(path){
+    var deferred  = $q.defer(); // the promise
+
+    $log.log('Deleting file:', file);
+
+    scope.getFileEntry(path).then(
+      // success callback
+      function(fileEntry){
+        fileEntry.remove(
+          // success callback
+          // error callback
+          function(error){
+            $log.warn('Error deleting file:', file, error);
+            deferred.reject(error);
+          }
+        );
+      },
+      // error callback
+      deferred.reject
     );
 
     // return the promise
