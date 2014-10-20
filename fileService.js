@@ -1,6 +1,7 @@
 /**
  * Handles file transfers
  */
+// TODO - check up-to-date documentation. It looks like we're using out-dated code - https://github.com/apache/cordova-plugin-file/blob/master/doc/index.md
 angular.module('greenimp').service('fileService', ['CordovaService', 'deviceService', '$log', '$q', function(CordovaService, deviceService, $log, $q){
   // if no LocalFileSystem has been declared create a dummy object
   if(typeof LocalFileSystem === 'undefined'){
@@ -10,7 +11,7 @@ angular.module('greenimp').service('fileService', ['CordovaService', 'deviceServ
   }
 
 
-  var scope         = this,
+  var scope         = this,                           // current scope
       rootPath      = deviceService.deviceRootPath(), // the root directory storage path for files
       addRoot       = function(path, root){           // adds the root path (if required) to the given path
         var deferred  = $q.defer(); // the promise
@@ -437,10 +438,8 @@ angular.module('greenimp').service('fileService', ['CordovaService', 'deviceServ
   };
 
   /**
-   * Returns a promise for the file
-   * at the given path.
-   * fileEntry can be a path to a file
-   * or a FileEntry object.
+   * Returns a promise for a File object at the given path.
+   * fileEntry can be a path to a file or a FileEntry object.
    *
    * @param {FileEntry|string} fileEntry
    * @returns {promise}
@@ -949,16 +948,5 @@ angular.module('greenimp').service('fileService', ['CordovaService', 'deviceServ
 
     // return the promise
     return deferred.promise;
-  };
-
-
-  /**
-   * Returns the cache directory for the order
-   *
-   * @param orderID
-   * @returns {string}
-   */
-  this.getCacheDir = function(orderID){
-    return 'cache/' + orderID + '/';
   };
 }]);
