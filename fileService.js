@@ -2,7 +2,7 @@
  * Handles file transfers
  */
 // TODO - check up-to-date documentation. It looks like we're using out-dated code - https://github.com/apache/cordova-plugin-file/blob/master/doc/index.md
-angular.module('greenimp').service('fileService', ['CordovaService', 'deviceService', '$log', '$q', function(CordovaService, deviceService, $log, $q){
+angular.module('greenimp.services', []).service('fileService', ['CordovaService', 'deviceService', '$log', '$q', function(CordovaService, deviceService, $log, $q){
   // if no LocalFileSystem has been declared create a dummy object
   if(typeof LocalFileSystem === 'undefined'){
     window.LocalFileSystem = {};
